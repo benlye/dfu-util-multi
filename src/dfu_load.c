@@ -60,7 +60,7 @@ int dfuload_do_upload(struct dfu_if *dif, int xfer_size, struct dfu_file file)
 		}
 		write_rc = fwrite(buf, 1, rc, file.filep);
 		if (write_rc < rc) {
-			fprintf(stderr, "Short file write: %s\n",
+			fprintf(stdout, "Short file write: %s\n",
 				strerror(errno));
 			ret = total_bytes;
 			goto out_free;
@@ -126,7 +126,7 @@ int dfuload_do_dnload(struct dfu_if *dif, int xfer_size, struct dfu_file file)
 		}
 		ret = dfu_download(dif->dev_handle, dif->interface, ret, ret ? buf : NULL);
 		if (ret < 0) {
-			fprintf(stderr, "Error during download\n");
+			fprintf(stdout, "Error during download\n");
 			goto out_free;
 		}
 		bytes_sent += ret;
@@ -134,7 +134,7 @@ int dfuload_do_dnload(struct dfu_if *dif, int xfer_size, struct dfu_file file)
 		do {
 			ret = dfu_get_status(dif->dev_handle, dif->interface, &dst);
 			if (ret < 0) {
-				fprintf(stderr, "Error during download get_status\n");
+				fprintf(stdout, "Error during download get_status\n");
 				goto out_free;
 			}
 
@@ -168,7 +168,7 @@ int dfuload_do_dnload(struct dfu_if *dif, int xfer_size, struct dfu_file file)
 	/* send one zero sized download request to signalize end */
 	ret = dfu_download(dif->dev_handle, dif->interface, 0, NULL);
 	if (ret < 0) {
-		fprintf(stderr, "Error sending completion packet\n");
+		fprintf(stdout, "Error sending completion packet\n");
 		goto out_free;
 	}
 
@@ -181,7 +181,7 @@ get_status:
 	/* Transition to MANIFEST_SYNC state */
 	ret = dfu_get_status(dif->dev_handle, dif->interface, &dst);
 	if (ret < 0) {
-		fprintf(stderr, "unable to read DFU status\n");
+		fprintf(stdout, "unable to read DFU status\n");
 		goto out_free;
 	}
 	printf("state(%u) = %s, status(%u) = %s\n", dst.bState,

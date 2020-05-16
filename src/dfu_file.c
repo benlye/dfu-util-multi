@@ -106,24 +106,24 @@ int parse_dfu_suffix(struct dfu_file *file)
 	rewind(file->filep);
 
 	if (file->size < sizeof(dfusuffix)) {
-		fprintf(stderr, "File too short for DFU suffix\n");
+		fprintf(stdout, "File too short for DFU suffix\n");
 		return 0;
 	}
 
 	firmware = (unsigned char*) malloc(file->size);
 	if (!firmware) {
-		fprintf(stderr, "Unable to allocate file buffer for firmware.\n");
+		fprintf(stdout, "Unable to allocate file buffer for firmware.\n");
 		exit(1);
 	}
 
 	ret = fread(firmware, 1, file->size, file->filep);
 	if (ret < 0) {
-		fprintf(stderr, "Could not read file\n");
+		fprintf(stdout, "Could not read file\n");
 		perror(file->name);
 		free(firmware);
 		return ret;
 	} else if (ret < file->size) {
-		fprintf(stderr, "Could not read whole file\n");
+		fprintf(stdout, "Could not read whole file\n");
 		free(firmware);
 		ret = -EIO;
 		goto out_rewind;
@@ -136,18 +136,18 @@ int parse_dfu_suffix(struct dfu_file *file)
 
 	ret = fseek(file->filep, -sizeof(dfusuffix), SEEK_END);
 	if (ret < 0) {
-		fprintf(stderr, "Could not seek to DFU suffix\n");
+		fprintf(stdout, "Could not seek to DFU suffix\n");
 		perror(file->name);
 		goto out_rewind;
 	}
 
 	ret = fread(dfusuffix, 1, sizeof(dfusuffix), file->filep);
 	if (ret < 0) {
-		fprintf(stderr, "Could not read DFU suffix\n");
+		fprintf(stdout, "Could not read DFU suffix\n");
 		perror(file->name);
 		goto out_rewind;
 	} else if (ret < sizeof(dfusuffix)) {
-		fprintf(stderr, "Could not read whole DFU suffix\n");
+		fprintf(stdout, "Could not read whole DFU suffix\n");
 		ret = -EIO;
 		goto out_rewind;
 	}
@@ -155,7 +155,7 @@ int parse_dfu_suffix(struct dfu_file *file)
 	if (dfusuffix[10] != 'D' ||
 	    dfusuffix[9]  != 'F' ||
 	    dfusuffix[8]  != 'U') {
-		fprintf(stderr, "No valid DFU suffix signature\n");
+		fprintf(stdout, "No valid DFU suffix signature\n");
 		ret = 0;
 		goto out_rewind;
 	}
@@ -166,7 +166,7 @@ int parse_dfu_suffix(struct dfu_file *file)
 		       dfusuffix[12];
 
 	if (file->dwCRC != crc) {
-		fprintf(stderr, "DFU CRC does not match\n");
+		fprintf(stdout, "DFU CRC does not match\n");
 		ret = 0;
 		goto out_rewind;
 	}
@@ -176,7 +176,7 @@ int parse_dfu_suffix(struct dfu_file *file)
 
 	file->suffixlen = dfusuffix[11];
 	if (file->suffixlen < sizeof(dfusuffix)) {
-		fprintf(stderr, "Unsupported DFU suffix length %i\n",
+		fprintf(stdout, "Unsupported DFU suffix length %i\n",
 			file->suffixlen);
 		ret = 0;
 		goto out_rewind;
@@ -227,18 +227,18 @@ int generate_dfu_suffix(struct dfu_file *file)
 	/* Make space for all but CRC */
 	firmware = (unsigned char*) malloc(file->size + file->suffixlen - 4);
 	if (!firmware) {
-		fprintf(stderr, "Unable to allocate file buffer for firmware.\n");
+		fprintf(stdout, "Unable to allocate file buffer for firmware.\n");
 		exit(1);
 	}
 
 	ret = fread(firmware, 1, file->size, file->filep);
 	if (ret < 0) {
-		fprintf(stderr, "Could not read file\n");
+		fprintf(stdout, "Could not read file\n");
 		perror(file->name);
 		free(firmware);
 		return ret;
 	} else if (ret < file->size) {
-		fprintf(stderr, "Could not read whole file\n");
+		fprintf(stdout, "Could not read whole file\n");
 		free(firmware);
 		return -EIO;
 	}
@@ -265,10 +265,10 @@ int generate_dfu_suffix(struct dfu_file *file)
 	/* Add the suffix at the end of the file */
 	ret = fwrite(dfusuffix, 1, sizeof(dfusuffix), file->filep);
 	if (ret < 0) {
-		fprintf(stderr, "Could not write DFU suffix\n");
+		fprintf(stdout, "Could not write DFU suffix\n");
 		perror(file->name);
 	} else if (ret < sizeof(dfusuffix)) {
-		fprintf(stderr, "Could not write whole DFU suffix\n");
+		fprintf(stdout, "Could not write whole DFU suffix\n");
 		ret = -EIO;
 	}
 

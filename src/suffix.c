@@ -196,7 +196,7 @@ int main(int argc, char **argv)
 			lmdfu_mode = LMDFU_ADD;
 			lmdfu_flash_address = strtoul(optarg, &end, 0);
 			if (*end) {
-				fprintf(stderr, "Error: Invalid lmdfu "
+				fprintf(stdout, "Error: Invalid lmdfu "
 					"address: %s\n", optarg);
 				exit(2);
 			}
@@ -214,7 +214,7 @@ int main(int argc, char **argv)
 		lmdfu_mode = LMDFU_DEL;
 
 	if (!file.name) {
-		fprintf(stderr, "You need to specify a filename\n");
+		fprintf(stdout, "You need to specify a filename\n");
 		help();
 		exit(2);
 	}
@@ -236,7 +236,7 @@ int main(int argc, char **argv)
 		}
 		if(lmdfu_mode == LMDFU_ADD) {
 			if(lmdfu_check_prefix(&file)) {
-				fprintf(stderr, "Adding new anyway\n");
+				fprintf(stdout, "Adding new anyway\n");
 			}
 			lmdfu_add_prefix(file, lmdfu_flash_address);
 		}
@@ -263,7 +263,7 @@ int main(int argc, char **argv)
 
 	if(lmdfu_mode == LMDFU_DEL) {
 		if (check_suffix(&file)) {
-			fprintf(stderr, "DFU suffix exist. Remove suffix before using -T or use it with -D to delete suffix\n");
+			fprintf(stdout, "DFU suffix exist. Remove suffix before using -T or use it with -D to delete suffix\n");
 			exit(1);
 		} else {
 			if(lmdfu_check_prefix(&file))

@@ -55,18 +55,18 @@ int lmdfu_add_prefix(struct dfu_file file, unsigned int address)
 
 	data = (unsigned char *)malloc(len);
 	if (!data) {
-		fprintf(stderr, "Unable to allocate buffer.\n");
+		fprintf(stdout, "Unable to allocate buffer.\n");
 		exit(1);
 	}
 
 	ret = fread(data, 1, len, file.filep);
 	if (ret < 0) {
-		fprintf(stderr, "Could not read file\n");
+		fprintf(stdout, "Could not read file\n");
 		perror(file.name);
 		free(data);
 		return ret;
 	} else if (ret < len) {
-		fprintf(stderr, "Could not read whole file\n");
+		fprintf(stdout, "Could not read whole file\n");
 		free(data);
 		return -EIO;
 	}
@@ -83,20 +83,20 @@ int lmdfu_add_prefix(struct dfu_file file, unsigned int address)
 	rewind(file.filep);
 	ret = fwrite(lmdfu_dfu_prefix, 1, sizeof(lmdfu_dfu_prefix), file.filep);
 	if (ret < 0) {
-		fprintf(stderr, "Could not write TI Stellaris DFU prefix\n");
+		fprintf(stdout, "Could not write TI Stellaris DFU prefix\n");
 		perror(file.name);
 	} else if (ret < sizeof(lmdfu_dfu_prefix)) {
-		fprintf(stderr, "Could not write while file\n");
+		fprintf(stdout, "Could not write while file\n");
 		ret = -EIO;
 	}
 
 	ret = fwrite(data, 1, len, file.filep);
 	if (ret < 0) {
-		fprintf(stderr, "Could not write data after TI Stellaris DFU "
+		fprintf(stdout, "Could not write data after TI Stellaris DFU "
 			"prefix\n");
 		perror(file.name);
 	} else if (ret < sizeof(lmdfu_dfu_prefix)) {
-		fprintf(stderr, "Could not write whole file\n");
+		fprintf(stdout, "Could not write whole file\n");
 		ret = -EIO;
 	}
 
@@ -120,25 +120,25 @@ int lmdfu_remove_prefix(struct dfu_file *file)
 
 	data = (unsigned char *)malloc(len);
 	if (!data) {
-		fprintf(stderr, "Unable to allocate buffer.\n");
+		fprintf(stdout, "Unable to allocate buffer.\n");
 		exit(1);
 	}
 
 	ret = fread(data, 1, len, file->filep);
 	if (ret < 0) {
-		fprintf(stderr, "Could not read file\n");
+		fprintf(stdout, "Could not read file\n");
 		perror(file->name);
 		free(data);
 		return ret;
 	} else if (ret < len) {
-		fprintf(stderr, "Could not read whole file\n");
+		fprintf(stdout, "Could not read whole file\n");
 		free(data);
 		return -EIO;
 	}
 
 	ret = ftruncate(fileno(file->filep), 0);
 	if (ret < 0) {
-		fprintf(stderr, "Error truncating\n");
+		fprintf(stdout, "Error truncating\n");
 	}
 	rewind(file->filep);
 
@@ -162,7 +162,7 @@ int lmdfu_check_prefix(struct dfu_file *file)
 
 	ret = fread(data, 1, sizeof(lmdfu_dfu_prefix), file->filep);
 	if (ret < sizeof(lmdfu_dfu_prefix)) {
-		fprintf(stderr, "Could not read prefix\n");
+		fprintf(stdout, "Could not read prefix\n");
 		perror(file->name);
 	}
 

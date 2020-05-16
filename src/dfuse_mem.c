@@ -95,12 +95,12 @@ struct memsegment *parse_memory_layout(char *intf_desc)
 
 	name = malloc(strlen(intf_desc));
 	if (!name) {
-		fprintf(stderr, "Error: Cannot allocate memory\n");
+		fprintf(stdout, "Error: Cannot allocate memory\n");
 		exit(1);
 	}
 	ret = sscanf(intf_desc, "@%[^/]%n", name, &scanned);
 	if (ret < 1) {
-		fprintf(stderr, "Error: Could not read name, sscanf returned "
+		fprintf(stdout, "Error: Could not read name, sscanf returned "
 			"%d\n", ret);
 		free(name);
 		return NULL;
@@ -111,7 +111,7 @@ struct memsegment *parse_memory_layout(char *intf_desc)
 	intf_desc += scanned;
 	typestring = malloc(strlen(intf_desc));
 	if (!typestring) {
-		fprintf(stderr, "Error: Cannot allocate memory\n");
+		fprintf(stdout, "Error: Cannot allocate memory\n");
 		exit(1);
 	}
 	while (ret = sscanf(intf_desc, "/0x%x/%n", &address, &scanned),
@@ -130,7 +130,7 @@ struct memsegment *parse_memory_layout(char *intf_desc)
 				    && typestring[0] != '/')
 					memtype = typestring[0];
 				else {
-					fprintf(stderr,
+					fprintf(stdout,
 						"Parsing type identifier '%s' "
 						"failed for segment %i\n",
 						typestring, count);
@@ -155,7 +155,7 @@ struct memsegment *parse_memory_layout(char *intf_desc)
 			case 'f':
 			case 'g':
 				if (!memtype) {
-					fprintf(stderr,
+					fprintf(stdout,
 						"Non-valid multiplier '%c', "
 						"interpreted as type "
 						"identifier instead\n",
@@ -165,13 +165,13 @@ struct memsegment *parse_memory_layout(char *intf_desc)
 				}
 				/* fallthrough if memtype was already set */
 			default:
-				fprintf(stderr,
+				fprintf(stdout,
 					"Non-valid multiplier '%c', "
 					"assuming bytes\n", multiplier);
 			}
 
 			if (!memtype) {
-				fprintf(stderr,
+				fprintf(stdout,
 					"No valid type for segment %d\n\n",
 					count);
 				continue;
