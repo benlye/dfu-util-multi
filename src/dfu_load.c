@@ -166,11 +166,13 @@ int dfuload_do_dnload(struct dfu_if *dif, int xfer_size, struct dfu_file file)
 	}
 
 	/* send one zero sized download request to signalize end */
+	/*
 	ret = dfu_download(dif->dev_handle, dif->interface, 0, NULL);
 	if (ret < 0) {
 		fprintf(stdout, "Error sending completion packet\n");
 		goto out_free;
 	}
+	*/
 
 	printf("] finished!\n");
 	fflush(stdout);
