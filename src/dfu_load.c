@@ -179,31 +179,34 @@ int dfuload_do_dnload(struct dfu_if *dif, int xfer_size, struct dfu_file file)
 	if (verbose)
 		printf("Sent a total of %i bytes\n", bytes_sent);
 
-get_status:
-	/* Transition to MANIFEST_SYNC state */
-	ret = dfu_get_status(dif->dev_handle, dif->interface, &dst);
-	if (ret < 0) {
-		fprintf(stdout, "unable to read DFU status\n");
-		goto out_free;
-	}
-	printf("state(%u) = %s, status(%u) = %s\n", dst.bState,
-		dfu_state_to_string(dst.bState), dst.bStatus,
-		dfu_status_to_string(dst.bStatus));
-	if (!(quirks & QUIRK_POLLTIMEOUT))
-		milli_sleep(dst.bwPollTimeout);
-
-	/* FIXME: deal correctly with ManifestationTolerant=0 / WillDetach bits */
-	switch (dst.bState) {
-	case DFU_STATE_dfuMANIFEST_SYNC:
-	case DFU_STATE_dfuMANIFEST:
-		/* some devices (e.g. TAS1020b) need some time before we
-		 * can obtain the status */
-		milli_sleep(1000);
-		goto get_status;
-		break;
-	case DFU_STATE_dfuIDLE:
-		break;
-	}
+/**
+ * Reading the state after upload takes the Maple device out of MANIFEST_SYNC state, which stops it restarting
+ */
+// get_status:
+//	/* Transition to MANIFEST_SYNC state */
+//	ret = dfu_get_status(dif->dev_handle, dif->interface, &dst);
+//	if (ret < 0) {
+//		fprintf(stdout, "unable to read DFU status\n");
+//		goto out_free;
+//	}
+//	printf("state(%u) = %s, status(%u) = %s\n", dst.bState,
+//		dfu_state_to_string(dst.bState), dst.bStatus,
+//		dfu_status_to_string(dst.bStatus));
+//	if (!(quirks & QUIRK_POLLTIMEOUT))
+//		milli_sleep(dst.bwPollTimeout);
+//
+//	/* FIXME: deal correctly with ManifestationTolerant=0 / WillDetach bits */
+//	switch (dst.bState) {
+//	case DFU_STATE_dfuMANIFEST_SYNC:
+//	case DFU_STATE_dfuMANIFEST:
+//		/* some devices (e.g. TAS1020b) need some time before we
+//		 * can obtain the status */
+//		milli_sleep(1000);
+//		goto get_status;
+//		break;
+//	case DFU_STATE_dfuIDLE:
+//		break;
+//	}
 	printf("Done!\n");
 
 out_free:
