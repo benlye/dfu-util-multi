@@ -183,9 +183,11 @@ int dfu_upload( libusb_device_handle *device,
           /* wLength       */ length,
                               dfu_timeout );
     if( status < 0 ) {
+        /*
         fprintf( stderr, "%s: libusb_control_msg returned %d\n",
 		 __FUNCTION__,
 		 status);
+         */
     }
 
     return status;

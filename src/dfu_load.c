@@ -56,7 +56,8 @@ int dfuload_do_upload(struct dfu_if *dif, int xfer_size, struct dfu_file file)
 		rc = dfu_upload(dif->dev_handle, dif->interface, xfer_size, buf);
 		if (rc < 0) {
 			ret = rc;
-			goto out_free;
+			// goto out_free;
+			break;
 		}
 		write_rc = fwrite(buf, 1, rc, file.filep);
 		if (write_rc < rc) {
