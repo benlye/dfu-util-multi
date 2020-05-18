@@ -560,10 +560,10 @@ MAKEFLAGS=
 # Identity of this package.
 PACKAGE_NAME='dfu-util'
 PACKAGE_TARNAME='dfu-util'
-PACKAGE_VERSION='0.7'
-PACKAGE_STRING='dfu-util 0.7'
-PACKAGE_BUGREPORT='dfu-util@lists.gnumonks.org'
-PACKAGE_URL='http://dfu-util.gnumonks.org'
+PACKAGE_VERSION='0.7_multi'
+PACKAGE_STRING='dfu-util 0.7 (multi)'
+PACKAGE_BUGREPORT='https://github.com/benlye/dfu-util-multi'
+PACKAGE_URL='https://github.com/benlye/dfu-util-multi'
 
 # Factoring default headers for most tests.
 ac_includes_default="\
