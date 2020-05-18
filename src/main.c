@@ -556,7 +556,9 @@ static void print_version(void)
 	printf(PACKAGE_STRING "\n\n");
 	printf("Copyright 2005-2008 Weston Schmidt, Harald Welte and OpenMoko Inc.\n"
 	       "Copyright 2010-2012 Tormod Volden and Stefan Schmidt\n"
-	       "This program is Free Software and has ABSOLUTELY NO WARRANTY\n"
+		   "Copyright 2020 Ben Lye\n"
+	       "This program is Free Software and has ABSOLUTELY NO WARRANTY\n\n"
+		   "This version of dfu-util.exe has been modified for flashing an STM32 MULTI-Module. It is intended for use with Flash Multi.\n"
 	       "Please report bugs to " PACKAGE_BUGREPORT "\n\n");
 }
 
@@ -725,7 +727,7 @@ int main(int argc, char **argv)
 	}
 
 	if (verbose > 1) {
-		libusb_set_debug(ctx, 255);
+		libusb_set_option(ctx, LIBUSB_OPTION_LOG_LEVEL, LIBUSB_LOG_LEVEL_DEBUG);
 	}
 
 	if (mode == MODE_LIST) {
@@ -1094,7 +1096,7 @@ status_again:
 	switch (mode) {
 	case MODE_UPLOAD:
 		/* open for "exclusive" writing in a portable way */
-		file.filep = fopen(file.name, "ab");
+		file.filep = fopen(file.name, "w+b");
 		if (file.filep == NULL) {
 			perror(file.name);
 			exit(1);
