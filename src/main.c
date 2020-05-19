@@ -558,7 +558,7 @@ static void print_version(void)
 	       "Copyright 2010-2012 Tormod Volden and Stefan Schmidt\n"
 		   "Copyright 2020 Ben Lye\n"
 	       "This program is Free Software and has ABSOLUTELY NO WARRANTY\n\n"
-		   "This version of dfu-util.exe has been modified for flashing an STM32 MULTI-Module. It is intended for use with Flash Multi.\n"
+		   "This version of dfu-util has been modified for flashing an STM32 MULTI-Module. It is intended for use with Flash Multi.\n"
 	       "Please report bugs to " PACKAGE_BUGREPORT "\n\n");
 }
 
