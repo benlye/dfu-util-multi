@@ -60,3 +60,4 @@ doc/Makefile
 Makefile
 src/Makefile
 autom4te.cache/
+config.h.in~
